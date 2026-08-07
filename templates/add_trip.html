@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Add Trip{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-primary text-white">
+
+                <h3 class="mb-0">🚚 Add Trip</h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Customer</label>
+
+                        <select name="customer" class="form-select" required>
+
+                            <option value="">Select Customer</option>
+
+                            {% for customer in customers %}
+
+                            <option value="{{ customer.id }}">
+                                {{ customer.name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Vehicle</label>
+
+                        <select name="vehicle" class="form-select" required>
+
+                            <option value="">Select Vehicle</option>
+                            <option value="Ashok Leyland">🚛 Ashok Leyland</option>
+                            <option value="Tata Zip">🚚 Tata Zip</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">From</label>
+
+                            <input
+                                type="text"
+                                name="from_place"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">To</label>
+
+                            <input
+                                type="text"
+                                name="to_place"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Material</label>
+
+                        <select name="material" class="form-select">
+
+                            <option>वाळू</option>
+                            <option>मुरूम</option>
+                            <option>खडी</option>
+                            <option>माती</option>
+                            <option>सिमेंट</option>
+                            <option>ऊस</option>
+                            <option>कांदा</option>
+                            <option>कापूस</option>
+                            <option>मका</option>
+                            <option>इतर</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">Weight (Ton)</label>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="weight"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">Trip Date</label>
+
+                            <input
+                                type="date"
+                                name="trip_date"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">Amount</label>
+
+                            <input
+                                type="number"
+                                name="amount"
+                                class="form-control"
+                                id="amount"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">Advance</label>
+
+                            <input
+                                type="number"
+                                name="advance"
+                                class="form-control"
+                                id="advance"
+                                value="0">
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label class="form-label">Balance</label>
+
+                            <input
+                                type="number"
+                                name="balance"
+                                class="form-control"
+                                id="balance"
+                                readonly>
+
+                        </div>
+
+                    </div>
+
+                    <button class="btn btn-success">
+
+                        💾 Save Trip
+
+                    </button>
+
+                    <a href="/trips" class="btn btn-secondary">
+
+                        ↩ Back
+
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function calculateBalance(){
+
+    let amount = parseFloat(document.getElementById("amount").value) || 0;
+    let advance = parseFloat(document.getElementById("advance").value) || 0;
+
+    document.getElementById("balance").value = amount - advance;
+
+}
+
+document.getElementById("amount").addEventListener("input", calculateBalance);
+document.getElementById("advance").addEventListener("input", calculateBalance);
+
+</script>
+
+{% endblock %}

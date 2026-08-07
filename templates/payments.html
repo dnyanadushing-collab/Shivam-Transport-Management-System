@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Payments{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>💵 Payments</h2>
+
+    <a href="/add_payment" class="btn btn-primary">
+        ➕ Add Payment
+    </a>
+
+</div>
+
+<form method="GET" action="/payments" class="row g-3 mb-4">
+
+    <div class="col-md-6">
+
+        <input
+            type="text"
+            class="form-control"
+            name="search"
+            placeholder="🔍 Search Customer..."
+            value="{{ search }}">
+
+    </div>
+
+    <div class="col-md-2">
+
+        <button class="btn btn-success w-100">
+            Search
+        </button>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <a href="/payments" class="btn btn-secondary w-100">
+            Reset
+        </a>
+
+    </div>
+
+</form>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <table class="table table-striped table-hover align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Payment Mode</th>
+                    <th>Remarks</th>
+                    <th>Date</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% if payments %}
+
+                {% for payment in payments %}
+
+                <tr>
+
+                    <td>{{ payment.id }}</td>
+
+                    <td>{{ payment.customer.name }}</td>
+
+                    <td class="text-success fw-bold">
+                        ₹{{ payment.amount }}
+                    </td>
+
+                    <td>
+
+                        {% if payment.payment_mode == "Cash" %}
+                            <span class="badge bg-success">💵 Cash</span>
+
+                        {% elif payment.payment_mode == "UPI" %}
+                            <span class="badge bg-primary">📱 UPI</span>
+
+                        {% elif payment.payment_mode == "Bank Transfer" %}
+                            <span class="badge bg-info">🏦 Bank</span>
+
+                        {% elif payment.payment_mode == "Cheque" %}
+                            <span class="badge bg-warning text-dark">🧾 Cheque</span>
+
+                        {% else %}
+                            <span class="badge bg-secondary">
+                                {{ payment.payment_mode }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ payment.remarks }}</td>
+
+                    <td>{{ payment.payment_date }}</td>
+
+                    <td>
+
+                        <a href="/edit_payment/{{ payment.id }}"
+                           class="btn btn-warning btn-sm">
+                            ✏️
+                        </a>
+
+                        <a href="/delete_payment/{{ payment.id }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this payment?')">
+                            🗑
+                        </a>
+
+                        {% if payment.customer.mobile %}
+
+                        <a href="https://wa.me/91{{ payment.customer.mobile }}?text=🚛%20Shivam%20Transport%0A%0AHello%20{{ payment.customer.name }},%0A%0AThank%20you%20for%20your%20payment.%0A%0APayment%20Amount:%20₹{{ payment.amount }}%0APayment%20Mode:%20{{ payment.payment_mode }}%0APayment%20Date:%20{{ payment.payment_date }}%0A%0AThank%20You!%20🙏"
+                           target="_blank"
+                           class="btn btn-success btn-sm">
+
+                            <i class="bi bi-whatsapp"></i>
+
+                        </a>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="7" class="text-center">
+
+                        No Payments Found
+
+                    </td>
+
+                </tr>
+
+            {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

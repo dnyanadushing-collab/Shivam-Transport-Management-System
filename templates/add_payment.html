@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Add Payment{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-success text-white">
+
+                <h3 class="mb-0">💵 Add Payment</h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Customer</label>
+
+                        <select name="customer" class="form-select" required>
+
+                            <option value="">Select Customer</option>
+
+                            {% for customer in customers %}
+
+                            <option value="{{ customer.id }}">
+                                {{ customer.name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Amount (₹)</label>
+
+                        <input
+                            type="number"
+                            name="amount"
+                            class="form-control"
+                            min="0"
+                            step="0.01"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Payment Mode</label>
+
+                        <select
+                            name="payment_mode"
+                            class="form-select"
+                            required>
+
+                            <option value="">Select Payment Mode</option>
+
+                            <option value="Cash">💵 Cash</option>
+                            <option value="UPI">📱 UPI</option>
+                            <option value="Bank Transfer">🏦 Bank Transfer</option>
+                            <option value="Cheque">🧾 Cheque</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Remarks</label>
+
+                        <textarea
+                            name="remarks"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Enter Remarks"></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Payment Date</label>
+
+                        <input
+                            type="date"
+                            name="payment_date"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        💾 Save Payment
+
+                    </button>
+
+                    <a
+                        href="/payments"
+                        class="btn btn-secondary">
+
+                        ↩ Back
+
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

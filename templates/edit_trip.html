@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Trip</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h2>🚛 Shivam Transport</h2>
+
+    <a href="/dashboard">🏠 Dashboard</a>
+    <a href="/customers">👥 Customers</a>
+    <a href="/trips">🚚 Trips</a>
+    <a href="#">💰 Udhari</a>
+    <a href="#">💵 Payments</a>
+    <a href="#">📊 Reports</a>
+    <a href="/">🚪 Logout</a>
+
+</div>
+
+<div class="main">
+
+    <h1>Edit Trip</h1>
+
+    <div class="card">
+
+        <form method="POST">
+
+            <label><b>Customer</b></label><br>
+
+            <select name="customer" required style="width:100%;padding:12px;">
+
+                {% for customer in customers %}
+
+                <option value="{{ customer.id }}"
+                    {% if customer.id == trip.customer_id %}selected{% endif %}>
+                    {{ customer.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <br><br>
+
+            <label><b>Vehicle</b></label><br>
+
+            <select name="vehicle" required style="width:100%;padding:12px;">
+
+                <option value="Ashok Leyland"
+                    {% if trip.vehicle_no == "Ashok Leyland" %}selected{% endif %}>
+                    🚛 Ashok Leyland
+                </option>
+
+                <option value="Tata Zip"
+                    {% if trip.vehicle_no == "Tata Zip" %}selected{% endif %}>
+                    🚚 Tata Zip
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <label><b>From</b></label><br>
+
+            <input
+                type="text"
+                name="from_place"
+                value="{{ trip.from_place }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>To</b></label><br>
+
+            <input
+                type="text"
+                name="to_place"
+                value="{{ trip.to_place }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>Material</b></label><br>
+
+            <input
+                type="text"
+                name="material"
+                value="{{ trip.material }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>Weight</b></label><br>
+
+            <input
+                type="number"
+                step="0.01"
+                name="weight"
+                value="{{ trip.weight }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>Total Amount</b></label><br>
+
+            <input
+                type="number"
+                step="0.01"
+                name="amount"
+                value="{{ trip.amount }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>Advance</b></label><br>
+
+            <input
+                type="number"
+                step="0.01"
+                name="advance"
+                value="{{ trip.advance }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>Balance</b></label><br>
+
+            <input
+                type="number"
+                step="0.01"
+                name="balance"
+                value="{{ trip.balance }}"
+                required
+            >
+
+            <br><br>
+
+            <label><b>Trip Date</b></label><br>
+
+            <input
+                type="date"
+                name="trip_date"
+                value="{{ trip.trip_date }}"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">
+                Update Trip
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

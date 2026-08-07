@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Payment{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-warning">
+
+                <h3 class="mb-0">✏️ Edit Payment</h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Customer</label>
+
+                        <select name="customer" class="form-select" required>
+
+                            {% for customer in customers %}
+
+                            <option value="{{ customer.id }}"
+                                {% if payment.customer_id == customer.id %}selected{% endif %}>
+
+                                {{ customer.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Amount (₹)</label>
+
+                        <input
+                            type="number"
+                            name="amount"
+                            class="form-control"
+                            value="{{ payment.amount }}"
+                            step="0.01"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Payment Mode</label>
+
+                        <select
+                            name="payment_mode"
+                            class="form-select"
+                            required>
+
+                            <option value="Cash"
+                                {% if payment.payment_mode=="Cash" %}selected{% endif %}>
+                                💵 Cash
+                            </option>
+
+                            <option value="UPI"
+                                {% if payment.payment_mode=="UPI" %}selected{% endif %}>
+                                📱 UPI
+                            </option>
+
+                            <option value="Bank Transfer"
+                                {% if payment.payment_mode=="Bank Transfer" %}selected{% endif %}>
+                                🏦 Bank Transfer
+                            </option>
+
+                            <option value="Cheque"
+                                {% if payment.payment_mode=="Cheque" %}selected{% endif %}>
+                                🧾 Cheque
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Remarks</label>
+
+                        <textarea
+                            name="remarks"
+                            class="form-control"
+                            rows="3">{{ payment.remarks }}</textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Payment Date</label>
+
+                        <input
+                            type="date"
+                            name="payment_date"
+                            class="form-control"
+                            value="{{ payment.payment_date }}"
+                            required>
+
+                    </div>
+
+                    <button class="btn btn-success">
+
+                        💾 Update Payment
+
+                    </button>
+
+                    <a href="/payments"
+                       class="btn btn-secondary">
+
+                        ↩ Back
+
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Customers{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>👥 Customers</h2>
+
+    <a href="/add_customer" class="btn btn-primary">
+        ➕ Add Customer
+    </a>
+
+</div>
+
+<form method="GET" action="/customers" class="row g-3 mb-4">
+
+    <div class="col-md-6">
+
+        <input
+            type="text"
+            class="form-control"
+            name="search"
+            placeholder="🔍 Search Customer..."
+            value="{{ search }}">
+
+    </div>
+
+    <div class="col-md-2">
+
+        <button class="btn btn-success w-100">
+            Search
+        </button>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <a href="/customers" class="btn btn-secondary w-100">
+            Reset
+        </a>
+
+    </div>
+
+</form>
+
+<div class="card shadow border-0">
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Village</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% if customers %}
+
+                {% for customer in customers %}
+
+                <tr>
+
+                    <td>{{ customer.id }}</td>
+
+                    <td>{{ customer.name }}</td>
+
+                    <td>{{ customer.mobile }}</td>
+
+                    <td>{{ customer.village }}</td>
+
+                    <td>
+
+                        <a href="/edit_customer/{{ customer.id }}"
+                           class="btn btn-warning btn-sm">
+                            ✏️ Edit
+                        </a>
+
+                        <a href="/delete_customer/{{ customer.id }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this customer?')">
+                            🗑 Delete
+                        </a>
+
+                        <a href="/customer_ledger/{{ customer.id }}"
+                           class="btn btn-info btn-sm">
+                            📋 Ledger
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center">
+
+                        No Customers Found
+
+                    </td>
+
+                </tr>
+
+            {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

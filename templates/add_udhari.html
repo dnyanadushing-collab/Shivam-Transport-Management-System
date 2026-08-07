@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block title %}Add Udhari{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-danger text-white">
+
+                <h3 class="mb-0">💰 Add Udhari</h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Customer</label>
+
+                        <select name="customer" class="form-select" required>
+
+                            <option value="">Select Customer</option>
+
+                            {% for customer in customers %}
+
+                            <option value="{{ customer.id }}">
+                                {{ customer.name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Amount (₹)</label>
+
+                        <input
+                            type="number"
+                            name="amount"
+                            class="form-control"
+                            min="0"
+                            step="0.01"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Description</label>
+
+                        <textarea
+                            name="description"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Enter Description"></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Udhari Date</label>
+
+                        <input
+                            type="date"
+                            name="udhari_date"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        💾 Save Udhari
+
+                    </button>
+
+                    <a href="/udhari"
+                       class="btn btn-secondary">
+
+                        ↩ Back
+
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
