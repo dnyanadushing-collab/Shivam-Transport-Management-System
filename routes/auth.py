@@ -770,17 +770,21 @@ def send_whatsapp(customer_id):
     remaining = total_udhari - total_payment
 
     message = f"""
-🚛 Shivam Transport
+🚛 *शिवम ट्रान्सपोर्ट*
 
-Customer : {customer.name}
+ग्राहकाचे नाव : {customer.name}
+मोबाईल नंबर : {customer.mobile}
+गाव : {customer.village}
 
-Total Udhari : Rs. {total_udhari}
+💰 एकूण उधारी : ₹{total_udhari}
+💵 एकूण जमा : ₹{total_payment}
 
-Total Payment : Rs. {total_payment}
+🔴 बाकी रक्कम : ₹{remaining}
 
-Remaining Balance : Rs. {remaining}
+कृपया बाकी रक्कम लवकरात लवकर जमा करावी.
 
-Thank You 🙏
+धन्यवाद 🙏
+*शिवम ट्रान्सपोर्ट*
 """
 
     mobile = customer.mobile
