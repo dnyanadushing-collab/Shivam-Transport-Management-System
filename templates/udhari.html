@@ -86,20 +86,23 @@
 
                     <td>
 
+                        <!-- Edit Button -->
                         <a href="/edit_udhari/{{ u.id }}"
                            class="btn btn-warning btn-sm">
                             ✏️
                         </a>
 
+                        <!-- Delete Button -->
                         <a href="/delete_udhari/{{ u.id }}"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('Delete this Udhari?')">
                             🗑
                         </a>
 
+                        <!-- WhatsApp Button -->
                         {% if u.customer.mobile %}
 
-                        <a href="https://wa.me/91{{ u.customer.mobile }}?text=🚛%20Shivam%20Transport%0A%0AHello%20{{ u.customer.name }},%0A%0AThis%20is%20a%20friendly%20reminder.%0A%0AOutstanding%20Amount:%20₹{{ u.amount }}%0ADescription:%20{{ u.description }}%0ADate:%20{{ u.udhari_date }}%0A%0AKindly%20clear%20your%20pending%20amount.%0A%0AThank%20You%20🙏%0AShivam%20Transport"
+                        <a href="/send_whatsapp/{{ u.customer.id }}"
                            target="_blank"
                            class="btn btn-success btn-sm">
 

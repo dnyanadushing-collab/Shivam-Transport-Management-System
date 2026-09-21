@@ -795,3 +795,57 @@ def send_whatsapp(customer_id):
     )
 
     return redirect(url)
+# ---------------- SEND PAYMENT WHATSAPP ----------------
+
+@auth.route("/send_payment_whatsapp/<int:payment_id>")
+def send_payment_whatsapp(payment_id):
+
+    payment = Payment.query.get_or_404(payment_id)
+
+    customer = payment.customer
+
+    # Customer ची एकूण उधारी
+    total_udhari = db.session.query(
+        func.coalesce(func.sum(Udhari.amount), 0)
+    ).filter(
+        Udhari.customer_id == customer.id
+    ).scalar()
+
+    # Customer ची एकूण जमा
+    total_payment = db.session.query(
+        func.coalesce(func.sum(Payment.amount), 0)
+    ).filter(
+        Payment.customer_id == customer.id
+    ).scalar()
+
+    # बाकी रक्कम
+    remaining = total_udhari - total_payment
+
+    message = f"""🚛 *शिवम ट्रान्सपोर्ट*
+
+नमस्कार {customer.name},
+
+💵 *पेमेंट प्राप्त झाले आहे.*
+
+रक्कम : ₹{payment.amount}
+पेमेंट पद्धत : {payment.payment_mode}
+पेमेंट तारीख : {payment.payment_date}
+शेरा : {payment.remarks or "-"}
+
+💰 एकूण उधारी : ₹{total_udhari}
+💵 एकूण जमा : ₹{total_payment}
+🔴 बाकी रक्कम : ₹{remaining}
+
+आपले पेमेंट मिळाले आहे. धन्यवाद! 🙏
+
+*शिवम ट्रान्सपोर्ट*
+"""
+
+    mobile = customer.mobile
+
+    url = "https://wa.me/91{}?text={}".format(
+        mobile,
+        quote(message)
+    )
+
+    return redirect(url)

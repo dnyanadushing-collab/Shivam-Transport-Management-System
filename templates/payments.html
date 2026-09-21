@@ -86,18 +86,31 @@
                     <td>
 
                         {% if payment.payment_mode == "Cash" %}
-                            <span class="badge bg-success">💵 Cash</span>
+
+                            <span class="badge bg-success">
+                                💵 Cash
+                            </span>
 
                         {% elif payment.payment_mode == "UPI" %}
-                            <span class="badge bg-primary">📱 UPI</span>
+
+                            <span class="badge bg-primary">
+                                📱 UPI
+                            </span>
 
                         {% elif payment.payment_mode == "Bank Transfer" %}
-                            <span class="badge bg-info">🏦 Bank</span>
+
+                            <span class="badge bg-info">
+                                🏦 Bank
+                            </span>
 
                         {% elif payment.payment_mode == "Cheque" %}
-                            <span class="badge bg-warning text-dark">🧾 Cheque</span>
+
+                            <span class="badge bg-warning text-dark">
+                                🧾 Cheque
+                            </span>
 
                         {% else %}
+
                             <span class="badge bg-secondary">
                                 {{ payment.payment_mode }}
                             </span>
@@ -112,26 +125,29 @@
 
                     <td>
 
+                        <!-- Edit Button -->
                         <a href="/edit_payment/{{ payment.id }}"
                            class="btn btn-warning btn-sm">
                             ✏️
                         </a>
 
+                        <!-- Delete Button -->
                         <a href="/delete_payment/{{ payment.id }}"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('Delete this payment?')">
                             🗑
                         </a>
 
+                        <!-- WhatsApp Button -->
                         {% if payment.customer.mobile %}
 
-                        <a href="https://wa.me/91{{ payment.customer.mobile }}?text=🚛%20Shivam%20Transport%0A%0AHello%20{{ payment.customer.name }},%0A%0AThank%20you%20for%20your%20payment.%0A%0APayment%20Amount:%20₹{{ payment.amount }}%0APayment%20Mode:%20{{ payment.payment_mode }}%0APayment%20Date:%20{{ payment.payment_date }}%0A%0AThank%20You!%20🙏"
-                           target="_blank"
-                           class="btn btn-success btn-sm">
+                        <a href="/send_payment_whatsapp/{{ payment.id }}"
+   target="_blank"
+   class="btn btn-success btn-sm">
 
-                            <i class="bi bi-whatsapp"></i>
+    <i class="bi bi-whatsapp"></i>
 
-                        </a>
+</a>
 
                         {% endif %}
 
