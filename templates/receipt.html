@@ -1,0 +1,390 @@
+```html
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shivam Transport - Receipt</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px;
+            font-family: Arial, "Noto Sans Devanagari", sans-serif;
+            background: #eef3f9;
+            color: #222;
+        }
+
+        .receipt {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border: 2px solid #123d70;
+            border-radius: 10px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #123d70;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #123d70;
+            font-size: 30px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #555;
+        }
+
+        .receipt-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .receipt-title h2 {
+            margin: 0;
+            color: #123d70;
+        }
+
+        .receipt-number {
+            padding: 8px 12px;
+            background: #e8f1ff;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin-top: 20px;
+            padding: 9px 12px;
+            color: white;
+            background: #123d70;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        td, th {
+            border: 1px solid #d5dce5;
+            padding: 11px;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+
+        td:first-child {
+            width: 42%;
+            font-weight: bold;
+            background: #f5f8fc;
+        }
+
+        .amount {
+            color: #123d70;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f6fc;
+            border-left: 4px solid #123d70;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px dashed #999;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 25px auto;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 22px;
+            font-size: 15px;
+            text-decoration: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .print-btn {
+            background: #123d70;
+        }
+
+        .back-btn {
+            background: #555;
+        }
+
+        .amount-row {
+            background: #e8f1ff;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .receipt {
+                max-width: 100%;
+                border: 1px solid #123d70;
+                border-radius: 0;
+                padding: 15px;
+            }
+
+            .buttons {
+                display: none !important;
+            }
+
+            .section-title {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .header {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 8px;
+            }
+
+            .receipt {
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            td, th {
+                padding: 8px;
+                font-size: 13px;
+            }
+
+            .receipt-title h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="receipt">
+
+    <div class="header">
+        <h1>🚛 SHIVAM TRANSPORT</h1>
+        <p>Transport Management System</p>
+        <p>व्यवहाराची पावती</p>
+    </div>
+
+    <div class="receipt-title">
+        <h2>
+            {% if receipt_type == "trip" %}
+                Trip Receipt
+            {% elif receipt_type == "udhari" %}
+                Udhari Receipt
+            {% elif receipt_type == "payment" %}
+                Payment Receipt
+            {% endif %}
+        </h2>
+
+        <div class="receipt-number">
+            Receipt No:
+            {% if receipt_type == "trip" %}
+                TR-{{ "%05d"|format(record.id) }}
+            {% elif receipt_type == "udhari" %}
+                UD-{{ "%05d"|format(record.id) }}
+            {% elif receipt_type == "payment" %}
+                PY-{{ "%05d"|format(record.id) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section-title">Customer Details / ग्राहकाची माहिती</div>
+
+    <table>
+        <tr>
+            <td>Customer Name</td>
+            <td>{{ customer.name or "-" }}</td>
+        </tr>
+        <tr>
+            <td>Mobile Number</td>
+            <td>{{ customer.mobile or "-" }}</td>
+        </tr>
+        <tr>
+            <td>Village</td>
+            <td>{{ customer.village or "-" }}</td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td>{{ customer.address or "-" }}</td>
+        </tr>
+    </table>
+
+    {% if receipt_type == "trip" %}
+
+        <div class="section-title">Trip Details / ट्रिपची माहिती</div>
+
+        <table>
+            <tr>
+                <td>Vehicle Number</td>
+                <td>{{ record.vehicle_no or "-" }}</td>
+            </tr>
+            <tr>
+                <td>Material</td>
+                <td>{{ record.material or "-" }}</td>
+            </tr>
+            <tr>
+                <td>From</td>
+                <td>{{ record.from_place or "-" }}</td>
+            </tr>
+            <tr>
+                <td>To</td>
+                <td>{{ record.to_place or "-" }}</td>
+            </tr>
+            <tr>
+                <td>Weight</td>
+                <td>
+                    {% if record.weight is not none %}
+                        {{ record.weight }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Trip Date</td>
+                <td>{{ record.trip_date or "-" }}</td>
+            </tr>
+            <tr class="amount-row">
+                <td>Total Amount</td>
+                <td class="amount">₹{{ "%.2f"|format(record.amount or 0) }}</td>
+            </tr>
+            <tr>
+                <td>Advance</td>
+                <td>₹{{ "%.2f"|format(record.advance or 0) }}</td>
+            </tr>
+            <tr>
+                <td>Trip Balance</td>
+                <td class="amount">₹{{ "%.2f"|format(record.balance or 0) }}</td>
+            </tr>
+        </table>
+
+    {% elif receipt_type == "udhari" %}
+
+        <div class="section-title">Udhari Details / उधारीची माहिती</div>
+
+        <table>
+            <tr>
+                <td>Udhari Date</td>
+                <td>{{ record.udhari_date or "-" }}</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>{{ record.description or "-" }}</td>
+            </tr>
+            <tr class="amount-row">
+                <td>Udhari Amount</td>
+                <td class="amount">₹{{ "%.2f"|format(record.amount or 0) }}</td>
+            </tr>
+        </table>
+
+    {% elif receipt_type == "payment" %}
+
+        <div class="section-title">Payment Details / पेमेंटची माहिती</div>
+
+        <table>
+            <tr>
+                <td>Payment Date</td>
+                <td>{{ record.payment_date or "-" }}</td>
+            </tr>
+            <tr>
+                <td>Payment Mode</td>
+                <td>{{ record.payment_mode or "-" }}</td>
+            </tr>
+            <tr>
+                <td>Remarks</td>
+                <td>{{ record.remarks or "-" }}</td>
+            </tr>
+            <tr class="amount-row">
+                <td>Payment Amount</td>
+                <td class="amount">₹{{ "%.2f"|format(record.amount or 0) }}</td>
+            </tr>
+        </table>
+
+    {% endif %}
+
+    <div class="summary">
+        <strong>Customer Account Summary</strong>
+        <table>
+            <tr>
+                <td>Total Udhari</td>
+                <td>₹{{ "%.2f"|format(total_udhari or 0) }}</td>
+            </tr>
+            <tr>
+                <td>Total Payments</td>
+                <td>₹{{ "%.2f"|format(total_payment or 0) }}</td>
+            </tr>
+            <tr>
+                <td>Remaining Udhari Balance</td>
+                <td class="amount">₹{{ "%.2f"|format(remaining or 0) }}</td>
+            </tr>
+        </table>
+        <p><small>टीप: वरील खाते सारांश हा सध्याच्या Udhari आणि Payments नोंदींवर आधारित आहे.</small></p>
+    </div>
+
+    <div class="footer">
+        <strong>SHIVAM TRANSPORT</strong><br>
+        धन्यवाद! आपला व्यवहार यशस्वी होवो.<br>
+        ही संगणकीय पावती आहे.
+    </div>
+
+</div>
+
+<div class="buttons">
+    <button class="btn print-btn" onclick="window.print()">
+        🖨️ Print / Save as PDF
+    </button>
+
+    <a class="btn back-btn" href="{{ url_for('auth.dashboard') }}">
+        Back to Dashboard
+    </a>
+</div>
+
+</body>
+</html>
+```
